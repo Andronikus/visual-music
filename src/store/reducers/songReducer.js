@@ -29,7 +29,17 @@ export const songReducer = (state = initialState.song, action) => {
                 ...state,
                 blob: action.blob
             };
-
+        case 'PLAY_PRESSED':
+            return {
+                ...state,
+                playPressed: action.value
+            }
+        case 'SET_DURATION':
+            console.log('setDuration reducer');
+            return {
+                ...state,
+                duration: action.duration
+            }
         default:
             return state;
     }

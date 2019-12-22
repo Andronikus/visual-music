@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-// import Error from '../../components/Error/Error';
-// import SoundPlayer from '../../components/SoundPlayer/SoundPlayer.component';
+import { useSelector, useDispatch } from 'react-redux';
 import Visualizer from '../../components/Visualizer/Visualizer.component';
 import PlayerBar from '../../components/PlayerBar/PlayerBar';
 import classes from './App.module.scss';
@@ -9,30 +7,46 @@ import classes from './App.module.scss';
 import HamburgerToggle from '../../components/HamburgerToggle/HamburgerToggle';
 import VisualPanel from '../../components/VisualPanel/VisualPanel';
 
+import { setPlayPressed, setDuration} from '../../store/actions/songActions';
+
 export default function App({ song }) {
     // States
     const [uploadedSong, setUploadedSong] = useState(null);
-    const [playPressed, setPlayPressed] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [duration, setDuration] = useState('0:00');
+    // const [duration, setDuration] = useState('0:00');
     const [volume, setVolume] = useState(0.5);
     const [togglePanel, setTogglePanel] = useState(false);
     const [songEnded, setSongEnded] = useState(false);
     const [blob, setBlob] = useState(null);
 
     const downloadState = useSelector(state => state.download.downloadState);
+    const playPressed = useSelector(state => state.song.playPressed);
+    const duration = useSelector(state => state.song.duration);
     // Refs
     const audioRef = useRef(null);
+    // Dispatch
+    const dispatch = useDispatch();
 
     // Effects
     useEffect(() => {
+        console.log('useEffects1', song);
         setUploadedSong(song);
         setBlob(song.blob);
         setSongEnded(false);
-        setPlayPressed(false);
         setIsPlaying(false);
     }, [song]);
 
+    /*
+    useEffect( (dispatch) => {
+        console.log('useEffects2');
+        dispatch(setPlayPressed(false));
+        // dispatch(setDuration('0:00'));
+        return () => {
+            dispatch(setPlayPressed(false));
+            dispatch(setDuration('0:00'));
+        }
+    }, []);
+*/
     /********************************************
         Handles changing of volume state upon
         slider interaction. State changes are sent to
@@ -52,7 +66,7 @@ export default function App({ song }) {
     *********************************************/
     const onPlayPress = event => {
         if (uploadedSong) {
-            setPlayPressed(!playPressed);
+            dispatch(setPlayPressed(!playPressed));
         } else {
             alert('No file loaded');
         }
@@ -64,7 +78,7 @@ export default function App({ song }) {
 
     const onSongEnd = () => {
         setIsPlaying(false);
-        setPlayPressed(false);
+        dispatch(setPlayPressed(false));
         setSongEnded(true);
     };
 
@@ -74,7 +88,8 @@ export default function App({ song }) {
     ********************************************/
     const handleMetadata = event => {
         const duration = event.currentTarget.duration;
-        setDuration(getTime(duration));
+        console.log('duration: ', duration);
+        dispatch(setDuration(getTime(duration)));
     };
 
     const getTime = dur => {

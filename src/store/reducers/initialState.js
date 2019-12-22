@@ -3,7 +3,9 @@ export default {
     song: {
         url: null,
         name: null,
-        blob: null
+        blob: null,
+        playPressed: false,
+        duration: '0:00'
     },
     downloadState: false
 };
