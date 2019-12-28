@@ -13,7 +13,6 @@ export default function App({ song }) {
     // States
     const [uploadedSong, setUploadedSong] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
-    // const [duration, setDuration] = useState('0:00');
     const [volume, setVolume] = useState(0.5);
     const [togglePanel, setTogglePanel] = useState(false);
     const [songEnded, setSongEnded] = useState(false);
@@ -21,7 +20,7 @@ export default function App({ song }) {
 
     const downloadState = useSelector(state => state.download.downloadState);
     const playPressed = useSelector(state => state.song.playPressed);
-    const duration = useSelector(state => state.song.duration);
+    const songDuration = useSelector(state => state.song.duration);
     // Refs
     const audioRef = useRef(null);
     // Dispatch
@@ -29,24 +28,20 @@ export default function App({ song }) {
 
     // Effects
     useEffect(() => {
-        console.log('useEffects1', song);
         setUploadedSong(song);
         setBlob(song.blob);
         setSongEnded(false);
         setIsPlaying(false);
     }, [song]);
 
-    /*
-    useEffect( (dispatch) => {
-        console.log('useEffects2');
-        dispatch(setPlayPressed(false));
-        // dispatch(setDuration('0:00'));
+    
+    useEffect( () => {
         return () => {
             dispatch(setPlayPressed(false));
             dispatch(setDuration('0:00'));
         }
-    }, []);
-*/
+    }, [dispatch]);
+
     /********************************************
         Handles changing of volume state upon
         slider interaction. State changes are sent to
@@ -86,10 +81,11 @@ export default function App({ song }) {
         Uploaded audio file duration converted in
         to proper format e.g. 3:14
     ********************************************/
-    const handleMetadata = event => {
-        const duration = event.currentTarget.duration;
-        console.log('duration: ', duration);
-        dispatch(setDuration(getTime(duration)));
+    const handleMetadata = (songDuration, event) => {
+        const duration = getTime(event.currentTarget.duration);
+        if(songDuration && duration !== songDuration){
+            dispatch(setDuration(duration));
+        }
     };
 
     const getTime = dur => {
@@ -144,7 +140,7 @@ export default function App({ song }) {
                         id="audio"
                         ref={audioRef}
                         onEnded={onSongEnd}
-                        onLoadedMetadata={handleMetadata}
+                        onLoadedMetadata={(event) => handleMetadata(songDuration,event)}
                         onPlay={onAudioPlay}
                     ></audio>
                 </div>
@@ -160,7 +156,7 @@ export default function App({ song }) {
                         playPressed={playPressed}
                         isPlaying={isPlaying}
                         uploadedSong={uploadedSong}
-                        duration={duration}
+                        duration={songDuration}
                         songEnded={songEnded}
                     />
                 </div>

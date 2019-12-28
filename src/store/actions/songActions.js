@@ -59,7 +59,6 @@ export const setPlayPressed = playPressed => {
 export const setDuration = duration => {
     return (dispatch, getState) => {
         try{
-            console.log('setDuration action');
             dispatch({type: 'SET_DURATION', duration})
         }catch(err){
             dispatchError(dispatch,err);

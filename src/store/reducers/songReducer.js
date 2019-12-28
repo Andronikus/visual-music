@@ -35,7 +35,6 @@ export const songReducer = (state = initialState.song, action) => {
                 playPressed: action.value
             }
         case 'SET_DURATION':
-            console.log('setDuration reducer');
             return {
                 ...state,
                 duration: action.duration
