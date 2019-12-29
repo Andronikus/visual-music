@@ -155,10 +155,7 @@ export default function App({ song }) {
                 </div>
                 <div className={classes.bar}>
                     <PlayerBar
-                        currentTime={
-                            audioRef.current &&
-                            getTime(audioRef.current.currentTime)
-                        }
+                        currentTime={songCurrentTime}
                         volume={volume}
                         onVolumeChange={onVolumeChange}
                         onPlayPress={onPlayPress}

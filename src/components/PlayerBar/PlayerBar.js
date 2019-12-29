@@ -59,8 +59,8 @@ export default function PlayerBar(props) {
         playPressed,
         isPlaying,
         onVolumeChange,
-        songEnded
-        // currentTime
+        songEnded,
+        currentTime
     } = props;
 
     let actionButton;
@@ -86,7 +86,7 @@ export default function PlayerBar(props) {
                     {playPressed ? actionButton : <PlayIcon />}
                 </div>
                 <div className={classes.controls}>
-                    <span className={classes.progressTime}>0:00</span>
+                    <span className={classes.progressTime}>{currentTime}</span>
                     <div className={classes.slider}>
                         <div className={classes.progress} />
                     </div>

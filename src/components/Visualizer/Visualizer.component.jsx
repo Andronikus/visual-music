@@ -38,24 +38,16 @@ class Visualizer extends React.Component {
         this.setState({ canvasWidth: cWidth, canvasHeight: cHeight });
     };
 
-    componentDidMount(){
-        console.log('Visualizer', 'componentDidMount');
-    }
-
-    componentDidUpdate(){
-        console.log('Visualizer', 'componentDidUpdate');
-    }
-
-
-    /*    
+    
     shouldComponentUpdate(nextProps, nextState){
         return (this.props.playPressed !== nextProps.playPressed || 
                 this.props.uploadedSong !== nextProps.uploadedSong ||
-                this.props.volume !== nextProps.volume);
+                this.props.volume !== nextProps.volume || 
+                this.props.blob !== nextProps.blob ||
+                this.props.audioRef !== nextProps.audioRef ||
+                this.props.downloadVisual !== nextProps.downloadVisual);
     }
-    */  
-    
-
+      
     render() {
         const { sketch, canvasWidth, canvasHeight } = this.state;
 
