@@ -8,5 +8,10 @@ export default {
         duration: '0:00',
         currentTime: '0:00'
     },
+    songRuntimeInfo: {
+        playPressed: false,
+        duration: '0:00',
+        currentTime: '0:00'
+    },
     downloadState: false
 };

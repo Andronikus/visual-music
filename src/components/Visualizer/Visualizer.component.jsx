@@ -38,15 +38,25 @@ class Visualizer extends React.Component {
         this.setState({ canvasWidth: cWidth, canvasHeight: cHeight });
     };
 
+    componentDidMount(){
+        console.log('Visualizer', 'componentDidMount');
+    }
+
+    componentDidUpdate(){
+        console.log('Visualizer', 'componentDidUpdate');
+    }
+
+
+    /*    
+    shouldComponentUpdate(nextProps, nextState){
+        return (this.props.playPressed !== nextProps.playPressed || 
+                this.props.uploadedSong !== nextProps.uploadedSong ||
+                this.props.volume !== nextProps.volume);
+    }
+    */  
+    
+
     render() {
-        const {
-            volume,
-            playPressed,
-            uploadedSong,
-            audioRef,
-            downloadVisual,
-            blob
-        } = this.props;
         const { sketch, canvasWidth, canvasHeight } = this.state;
 
         return (
@@ -60,14 +70,14 @@ class Visualizer extends React.Component {
                     <div ref={measureRef} className={classes.visualizer}>
                         <P5Wrapper
                             sketch={sketch}
-                            volume={volume}
-                            playPressed={playPressed}
-                            uploadedSong={uploadedSong}
+                            volume={this.props.volume}
+                            playPressed={this.props.playPressed}
+                            uploadedSong={this.props.uploadedSong}
                             canvasWidth={canvasWidth}
                             canvasHeight={canvasHeight}
-                            audioRef={audioRef}
-                            downloadVisual={downloadVisual}
-                            blob={blob}
+                            audioRef={this.props.audioRef}
+                            downloadVisual={this.props.downloadVisual}
+                            blob={this.props.blob}
                             dispatch={useDispatch()}
                         />
                     </div>

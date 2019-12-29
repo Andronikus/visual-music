@@ -7,7 +7,7 @@ import classes from './App.module.scss';
 import HamburgerToggle from '../../components/HamburgerToggle/HamburgerToggle';
 import VisualPanel from '../../components/VisualPanel/VisualPanel';
 
-import { setPlayPressed, setDuration, setCurrentTime} from '../../store/actions/songActions';
+import { setPlayPressed, setDuration, setCurrentTime} from '../../store/actions/songRuntimeInfoActions';
 
 export default function App({ song }) {
     // States
@@ -19,14 +19,13 @@ export default function App({ song }) {
     const [blob, setBlob] = useState(null);
 
     const downloadState = useSelector(state => state.download.downloadState);
-    const playPressed = useSelector(state => state.song.playPressed);
-    const songDuration = useSelector(state => state.song.duration);
+    const playPressed = useSelector(state => state.songRuntimeInfo.playPressed);
+    const songDuration = useSelector(state => state.songRuntimeInfo.duration);
+    const songCurrentTime = useSelector(state => state.songRuntimeInfo.currentTime);
     // Refs
     const audioRef = useRef(null);
     // Dispatch
     const dispatch = useDispatch();
-
-    const sonfInfo = {songCurrentTime : '0:00'};
 
     // Effects
     useEffect(() => {
@@ -85,17 +84,15 @@ export default function App({ song }) {
     ********************************************/
     const handleMetadata = (songDuration, event) => {
         const duration = getTime(event.currentTarget.duration);
-        if(songDuration && duration !== songDuration){
+        if(!songDuration || duration !== songDuration){
             dispatch(setDuration(duration));
         }
     };
 
-    const handleTimeUpdate = (sonfInfo , event) => {
+    const handleTimeUpdate = (songCurrentTime , event) => {
         const currentTime = getTime(event.currentTarget.currentTime);
-        if(!sonfInfo.songCurrentTime || sonfInfo.songCurrentTime !== currentTime){
-            console.log('currentTime', currentTime);
-            sonfInfo.songCurrentTime = currentTime;
-            // dispatch(setCurrentTime(currentTime));
+        if(!songCurrentTime || songCurrentTime !== currentTime){
+            dispatch(setCurrentTime(currentTime));
         }
     }
 
@@ -153,7 +150,7 @@ export default function App({ song }) {
                         onEnded={onSongEnd}
                         onLoadedMetadata={(event) => handleMetadata(songDuration,event)}
                         onPlay={onAudioPlay}
-                        onTimeUpdate={(event) => handleTimeUpdate(sonfInfo, event)}
+                        onTimeUpdate={(event) => handleTimeUpdate(songCurrentTime, event)}
                     ></audio>
                 </div>
                 <div className={classes.bar}>
