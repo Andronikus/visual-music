@@ -5,7 +5,8 @@ export default {
         name: null,
         blob: null,
         playPressed: false,
-        duration: '0:00'
+        duration: '0:00',
+        currentTime: '0:00'
     },
     downloadState: false
 };

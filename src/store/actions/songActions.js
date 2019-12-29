@@ -67,4 +67,15 @@ export const setDuration = duration => {
     }
 }
 
+export const setCurrentTime = currentTime => {
+    return (dispatch, getState) => {
+        try{
+            dispatch({type: 'SET_CURRENT_TIME', currentTime})
+        }catch(err){
+            dispatchError(dispatch,err);
+        }
+
+    }
+}
+
 const dispatchError = (dispatch,err) => {dispatch({type: 'SONG_ERR', err})}

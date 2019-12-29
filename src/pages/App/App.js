@@ -7,7 +7,7 @@ import classes from './App.module.scss';
 import HamburgerToggle from '../../components/HamburgerToggle/HamburgerToggle';
 import VisualPanel from '../../components/VisualPanel/VisualPanel';
 
-import { setPlayPressed, setDuration} from '../../store/actions/songActions';
+import { setPlayPressed, setDuration, setCurrentTime} from '../../store/actions/songActions';
 
 export default function App({ song }) {
     // States
@@ -25,6 +25,8 @@ export default function App({ song }) {
     const audioRef = useRef(null);
     // Dispatch
     const dispatch = useDispatch();
+
+    const sonfInfo = {songCurrentTime : '0:00'};
 
     // Effects
     useEffect(() => {
@@ -88,6 +90,15 @@ export default function App({ song }) {
         }
     };
 
+    const handleTimeUpdate = (sonfInfo , event) => {
+        const currentTime = getTime(event.currentTarget.currentTime);
+        if(!sonfInfo.songCurrentTime || sonfInfo.songCurrentTime !== currentTime){
+            console.log('currentTime', currentTime);
+            sonfInfo.songCurrentTime = currentTime;
+            // dispatch(setCurrentTime(currentTime));
+        }
+    }
+
     const getTime = dur => {
         return (
             Math.floor(dur / 60) + ':' + ('0' + Math.floor(dur % 60)).slice(-2)
@@ -142,6 +153,7 @@ export default function App({ song }) {
                         onEnded={onSongEnd}
                         onLoadedMetadata={(event) => handleMetadata(songDuration,event)}
                         onPlay={onAudioPlay}
+                        onTimeUpdate={(event) => handleTimeUpdate(sonfInfo, event)}
                     ></audio>
                 </div>
                 <div className={classes.bar}>
